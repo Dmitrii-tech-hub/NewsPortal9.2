@@ -1,0 +1,28 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <h1>Результаты поиска</h1>
+    <form method="get" action="{% url 'news_search' %}">
+        <input type="text" name="title" placeholder="По названию" />
+        <input type="text" name="author" placeholder="По имени автора" />
+        <input type="date" name="date_after" placeholder="После даты" />
+        <button type="submit">Поиск</button>
+    </form>
+
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'news_detail' pk=post.pk %}">
+                    <strong>{{ post.title|censor }}</strong>
+                </a>
+                <br>
+                <small>{{ post.created_at|date:"d.m.Y" }}</small>
+                <p>{{ post.content|censor|truncatewords:20 }}</p>
+            </li>
+        {% empty %}
+            <li>Ничего не найдено.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

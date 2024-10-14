@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }}</title>
+</head>
+<body>
+    <h2>{{ category.name }}</h2>
+    <p>{{ category.description }}</p>
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'category_detail' category.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Подписаться</button>
+        </form>
+    {% else %}
+        <p>Для подписки на категорию, пожалуйста, <a href="{% url 'login' %}">войдите</a>.</p>
+    {% endif %}
+
+    <h3>Посты в этой категории:</h3>
+    <ul>
+        {% for post in category.posts.all %}
+            <li>
+                <a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a>
+            </li>
+        {% empty %}
+            <li>Нет постов в этой категории.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

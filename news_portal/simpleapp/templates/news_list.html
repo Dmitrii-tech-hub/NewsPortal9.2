@@ -1,0 +1,27 @@
+{% extends 'default.html' %}
+
+{% block content %}
+  <h1>News List</h1>
+  <a href="{% url 'news_create' %}">Create News</a>
+  <ul>
+    {% for post in posts %}
+      <li>
+        <a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a>
+        <a href="{% url 'news_edit' post.pk %}">Edit</a>
+        <a href="{% url 'news_delete' post.pk %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% if is_paginated %}
+    <div>
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}
+
